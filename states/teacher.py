@@ -1,0 +1,2 @@
+def setup(user):
+    pass
