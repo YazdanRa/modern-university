@@ -28,6 +28,7 @@ database.create_tables([
     User,
     Course,
     StudentCourse,
+    Mark,
 ])
 
 

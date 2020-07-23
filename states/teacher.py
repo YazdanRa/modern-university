@@ -24,7 +24,8 @@ def setup(teacher):
         add_course_request.setup(teacher)
     elif choice == 'd':
         from processors import record_marks
-        record_marks.setup(teacher)
+        while not record_marks.setup(teacher):
+            return True
     elif choice == 'e':
         from processors import edit_info
         edit_info.setup(teacher)

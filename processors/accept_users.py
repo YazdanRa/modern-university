@@ -36,6 +36,7 @@ def set_role(user):
     else:
         print('Enter a valid letter!')
         return False
+    return True
 
 
 def setup():

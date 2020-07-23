@@ -8,14 +8,15 @@ def get_course_name(course):
     return course.title
 
 
-def result_mark(mark):
-    return str(mark) if mark else 'Not recorded!'
+def result_mark(course, student):
+    mark, created = Mark.get_or_create(course=course, student=student)
+    return str(mark.mark) if mark.mark else 'Not recorded!'
 
 
 def setup(student):
     table = Texttable().add_rows([
         ['Course title', 'Your mark']
     ])
-    for mark in Mark.select().where(Mark.student == student):
-        table.add_row([get_course_name(mark.course), result_mark(mark.mark)])
+    for course in student.courses:
+        table.add_row([course.title, result_mark(course, student)])
     print(table.draw())
