@@ -26,6 +26,8 @@ def setup():
         if validate(student_number):
             save_data(student_number, password)
             print('you successfully registered, now wait to accept by an admin!')
+        else:
+            print('This student number already exists!')
 
     else:
         print('passwords do not match')
