@@ -28,7 +28,7 @@ source .venv/bin/activate
 ```
 
 
-now you should see (.venv) at the first of the line lets install requirements by run command bellow
+now you should see `(.venv)` at the first of the line lets install requirements by run command bellow
 ```bash
 pip install -r requirements.txt
 ```
