@@ -1,5 +1,7 @@
 import logging
 import os
+import sys
+import getpass
 
 from models import *
 
@@ -32,6 +34,31 @@ database.create_tables([
 ])
 
 
+def createadmin():
+    student_number = input('Enter a Student number for admin: ')
+    if User.get_or_none(student_number=student_number):
+        print('this student number already exists!')
+        return
+    password, confirm_password, try_cnt = 1, 2, 0
+    while password != confirm_password and try_cnt < 3:
+        password = getpass.getpass('Enter your password: ')
+        confirm_password = getpass.getpass('Confirm your password: ')
+        if password != confirm_password:
+            print('Passwords are not match!, Try again!')
+        try_cnt += 1
+    if password != confirm_password:
+        print('Sorry :(')
+        return
+    User.insert({
+        User.student_number: student_number,
+        User.password: password,
+        User.is_active: True,
+        User.is_admin: True,
+    }).execute()
+    print('Admin successfully created :)')
+    return
+
+
 def main():
     from states import greetings
     while True:
@@ -39,4 +66,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if sys.argv:
+        if sys.argv[1] == 'createadmin':
+            createadmin()
+    else:
+        main()
