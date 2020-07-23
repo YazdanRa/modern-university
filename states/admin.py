@@ -29,7 +29,8 @@ def setup(admin):
         course_requests.setup()
     elif choice == 'e':
         from processors import accept_users
-        accept_users.setup()
+        while not accept_users.setup():
+            pass
     elif choice == 'f':
         from processors import top_students
         top_students.setup()
