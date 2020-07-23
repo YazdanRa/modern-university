@@ -1,10 +1,10 @@
-# modern-university
-University of Tehran; AP final project
+# Modern University
+University of Tehran; AP final project :trollface:
 
 
-# setup and run
+# Setup and Run!
 
-first clone the project and enter to the directory
+first clone the project and enter to the project directory
 ```bash
 git clone https://github.com/YazdanRa/modern-university.git
 ```
@@ -34,17 +34,23 @@ pip install -r requirements.txt
 ```
 
 
-to run the project you should set your own config! now we only have a Database config to make the config you should add `DATABASE=your_database_name.sqlite3` in a `.env` file to do that just run the command bellow on your terminal
+to run the project you should set your own config! 
+
+now we only have a Database config!
+
+to make thet you should insert `DATABASE=your_database_name.sqlite3` in a `.env` file, wich was handeled by `python-dotenv`
+
+to do that just run the command bellow on your terminal
 ```bash
 echo ‘DATABASE=database.sqlite3’ > .env
 ```
 
-now to create a admin user on the database by run the command bellow and make your admin user!
+now it's time to create an admin user on the database by run the command bellow and make your own admin user!
 ```bash
 python main.py createadmin
 ```
 
-lets run the project :)
+everything's done, lets run the project :)
 ```bash
 python main.py
 ```
