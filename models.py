@@ -24,6 +24,7 @@ class User(BaseModel):
     is_student = BooleanField(default=False)
     is_teacher = BooleanField(default=False)
     is_admin = BooleanField(default=False)
+    grade = IntegerField(null=True)
 
     # Extra Field
     national_id = CharField(max_length=32, null=True)
