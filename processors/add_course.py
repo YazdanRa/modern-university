@@ -1,12 +1,15 @@
+from texttable import Texttable
+
 from models import Course
 
 
 def setup(student):
     courses = Course.select().where(Course.is_active == True)
-    msg = ''
+    table = Texttable()
+    table.add_row(['ID', 'Course'])
     for course in courses:
-        msg += '| {} | {} |\n'.format(course.id, course.title)
-    print(msg)
+        table.add_row([course.id, course.title])
+    print(table.draw())
     try:
         course_id = int(input('which course do you want:'))
         course = Course.get(Course.id == course_id)

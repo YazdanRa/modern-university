@@ -1,8 +1,9 @@
+from texttable import Texttable
+
+
 def setup(student):
-    msg = """
-    {} {} courses
-    No {}
-    """.format(student.first_name, student.last_name, student.student_number)
+    table = Texttable()
+    table.add_row(["ID", "Course"])
     for course in student.courses:
-        msg += '| {} |\n'.format(course.title)
-    print(msg)
+        table.add_row([course.id, course.title])
+    print(table.draw())

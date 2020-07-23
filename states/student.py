@@ -1,14 +1,19 @@
+from texttable import Texttable
+
+
 def setup(student):
-    msg = """
-        A - My Courses
-        B - Result
-        C - Add Course
-        D - Evaluation of Teachers
-        E - Edit Info
-        F - Change Password
-        G - Log out
-    """
-    print(msg)
+    table = Texttable()
+    table.add_rows([
+        ["No", "ITEM"],
+        ['A', 'My Courses'],
+        ['B', 'Result'],
+        ['C', 'Add Course'],
+        ['D', 'Evaluation of Teachers'],
+        ['E', 'Edit Info'],
+        ['F', 'Change Password'],
+        ['G', 'Log out'],
+    ])
+    print(table.draw())
     choice = input('Which one do you want: ').lower()
     if choice == 'a':
         from processors import my_courses
@@ -22,7 +27,8 @@ def setup(student):
         from processors import evaluation
         evaluation.setup(student)
     elif choice == 'e':
-        pass
+        from processors import edit_info
+        edit_info.setup(student)
     elif choice == 'f':
         from processors import change_pass
         change_pass.setup(student)
