@@ -9,7 +9,7 @@
 
 
 # Modern University
-University of Tehran; AP final project :trollface:
+University of Tehran; AP final project 2020 :trollface:
 
 
 # Setup and Run!
@@ -38,6 +38,7 @@ virtualenv -p python3 .venv
 ```bash
 source .venv/bin/activate
 ```
+> for deactive that just run command `deactivate` in terminal :)
 
 
 now you should see `(.venv)` at the first of the line lets install requirements by run command bellow
