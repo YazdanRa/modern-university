@@ -19,10 +19,12 @@ sudo apt-get install virtualenv
 ```
 
 
-lets make an virtual environment with python3 and active it
+lets make a virtual environment with python3 and active it
 ```bash
 virtualenv -p python3 .venv
 ```
+> you can use any name insted of `.venv`
+
 ```bash
 source .venv/bin/activate
 ```
@@ -34,9 +36,7 @@ pip install -r requirements.txt
 ```
 
 
-to run the project you should set your own config! 
-
-now we only have a Database config!
+to run the project you should set your own config! now we only have a Database config!
 
 to make thet you should insert `DATABASE=your_database_name.sqlite3` in a `.env` file, wich was handeled by `python-dotenv`
 
