@@ -1,6 +1,8 @@
 # Modern University
 University of Tehran; AP final project :trollface:
-
+[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://t.me/yazdanra)
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 # Setup and Run!
 
@@ -38,7 +40,7 @@ pip install -r requirements.txt
 
 to run the project you should set your own config! now we only have a Database config!
 
-to make thet you should insert `DATABASE=your_database_name.sqlite3` in a `.env` file, wich was handeled by `python-dotenv`
+to make thet you should insert `DATABASE=your_database_name.sqlite3` in a `.env` file, which was handeled by `python-dotenv`!
 
 to do that just run the command bellow on your terminal
 ```bash
