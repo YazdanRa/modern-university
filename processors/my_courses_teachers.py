@@ -1,6 +1,9 @@
+import curses
+
 from texttable import Texttable
 
 from models import Course
+from render import show_message
 
 
 def setup(teacher):
@@ -9,4 +12,4 @@ def setup(teacher):
     ])
     for course in Course.select().where(Course.teacher == teacher):
         table.add_row([course.id, course.title, course.is_active])
-    print(table.draw())
+    curses.wrapper(show_message, table.draw())

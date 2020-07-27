@@ -1,6 +1,9 @@
+import curses
+
 from texttable import Texttable
 
 from models import Mark, Course
+from render import draw_menu
 
 
 def get_course_name(course):
@@ -19,4 +22,7 @@ def setup(student):
     ])
     for course in student.courses:
         table.add_row([course.title, result_mark(course, student)])
-    print(table.draw())
+    while True:
+        k = curses.wrapper(draw_menu, table.draw())
+        if k == ord('b'):
+            break

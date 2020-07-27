@@ -1,30 +1,27 @@
-from persiantools.jdatetime import JalaliDateTime
+import curses
+
 from texttable import Texttable
 
-from processors import login, register
+from render import draw_menu
 
 
 def setup():
-    header = Texttable()
-    header.add_rows([
-        ['Welcome to Modern University'],
-        [JalaliDateTime.now().strftime("%c")]
-    ])
-    print(header.draw())
     table = Texttable()
     table.add_rows([
         ["#", "Item"],
         ['L', 'Login'],
         ['R', 'Register'],
-        ['E', 'Exit']
     ])
-    print(table.draw())
-    choice = input('Which one do you want: ').lower()
-    if choice == 'l':
-        login.setup()
-    elif choice == 'r':
-        register.setup()
-    elif choice == 'e':
-        exit(print('Good Bye :)'))
-    else:
-        print('Enter a valid letter!')
+    message, alter, status = '', '', 'Press E to EXIT | '
+    while True:
+        choice = curses.wrapper(draw_menu, table.draw(), message, alter, status)
+        if choice == ord('l'):
+            from processors import login
+            login.setup()
+        elif choice == ord('r'):
+            from processors import register
+            register.setup()
+        elif choice == ord('e'):
+            exit(print('Good Bye :)'))
+        else:
+            alter = 'Enter a valid letter!'

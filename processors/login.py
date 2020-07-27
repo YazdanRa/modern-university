@@ -1,20 +1,24 @@
+import curses
+
 from models import User
+
+from render import get_input, show_message
 
 
 def get_data():
-    student_number = input('Enter your student number:\n')
-    password = input('Enter your password:\n')
+    student_number = curses.wrapper(get_input, 'Enter your student number:')
+    password = curses.wrapper(get_input, 'Enter your password:')
     return student_number, password
 
 
 def validate(student_number, password):
     user = User.select().where((User.student_number == student_number) & (User.password == password))
     if not len(user):
-        print('User dose not exists!')
+        curses.wrapper(show_message, 'User dose not exists!')
         return None
     user = user[0]
     if not user.is_active:
-        print('User is not active yet!')
+        curses.wrapper(show_message, 'User is not active yet!')
         return None
 
     return user

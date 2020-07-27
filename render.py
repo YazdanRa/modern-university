@@ -2,49 +2,35 @@ import curses
 from time import sleep
 
 from persiantools.jdatetime import JalaliDateTime
+from texttable import Texttable
 
 
-def draw_menu(stdscr, table):
-    k = 0
-    cursor_x = 0
-    cursor_y = 0
+def draw_menu(stdscr, table, msg='----', alter='', status=''):
+    # Clear and refresh the screen for a blank canvas
+    stdscr.clear()
+    stdscr.refresh()
+
+    # Start colors in curses
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
     # Initialization
     stdscr.clear()
     height, width = stdscr.getmaxyx()
 
-    if k == curses.KEY_DOWN:
-        cursor_y = cursor_y + 1
-    elif k == curses.KEY_UP:
-        cursor_y = cursor_y - 1
-    elif k == curses.KEY_RIGHT:
-        cursor_x = cursor_x + 1
-    elif k == curses.KEY_LEFT:
-        cursor_x = cursor_x - 1
-
-    cursor_x = max(0, cursor_x)
-    cursor_x = min(width - 1, cursor_x)
-
-    cursor_y = max(0, cursor_y)
-    cursor_y = min(height - 1, cursor_y)
-
     # Declaration of strings
-    title = JalaliDateTime.now().strftime("%c")[:width - 1]
-    subtitle = "Written by Clay McLeod"[:width - 1]
-    keystr = "Last key pressed: {}".format(k)[:width - 1]
-    statusbarstr = "Press 'q' to exit | STATUS BAR | Pos: {}, {}".format(cursor_x, cursor_y)
-    if k == 0:
-        keystr = "No key press detected..."[:width - 1]
+    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")[:width - 1]
+    Table = table[:width - 1]
+    Alter = alter[:width - 1]
+    message = msg[:width - 1]
+    statusbarstr = "Modern University | {}".format(status)
 
     # Centering calculations
     start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
-    start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
-    start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
+    start_x_keystr = int((width // 2) - (len(Alter) // 2) - len(Alter) % 2)
     start_y = int((height // 2) - 2)
-
-    # Rendering some text
-    whstr = "Width: {}, Height: {}".format(width, height)
-    stdscr.addstr(0, 0, whstr, curses.color_pair(1))
 
     # Render status bar
     stdscr.attron(curses.color_pair(3))
@@ -64,10 +50,9 @@ def draw_menu(stdscr, table):
     stdscr.attroff(curses.A_BOLD)
 
     # Print rest of text
-    stdscr.addstr(start_y + 1, start_x_subtitle, subtitle)
-    stdscr.addstr(start_y + 3, (width // 2) - 2, '-' * 4)
-    stdscr.addstr(start_y + 5, start_x_keystr, keystr)
-    stdscr.move(cursor_y, cursor_x)
+    stdscr.addstr(start_y + 1, 0, Table)
+    stdscr.addstr(start_y + 1, (width // 2) - 2, message)
+    stdscr.addstr(start_y + 2, start_x_keystr, Alter)
 
     # Refresh the screen
     stdscr.refresh()
@@ -77,9 +62,7 @@ def draw_menu(stdscr, table):
     return k
 
 
-def setup(table):
-    stdscr = curses.initscr()
-
+def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
     # Clear and refresh the screen for a blank canvas
     stdscr.clear()
     stdscr.refresh()
@@ -90,10 +73,118 @@ def setup(table):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-    while draw_menu(stdscr, table) != ord('q'):
-        sleep(1)
-    return
+    # Initialization
+    stdscr.clear()
+    height, width = stdscr.getmaxyx()
+
+    # Declaration of strings
+    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")[:width - 1]
+    message = msg[:width - 1]
+    keystr = alter[:width - 1]
+    statusbarstr = "Modern University | {}".format(status)
+
+    # Centering calculations
+    start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
+    start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
+    start_y = int((height // 2) - 2)
+
+    # Render status bar
+    stdscr.attron(curses.color_pair(3))
+    stdscr.addstr(height - 1, 0, statusbarstr)
+    stdscr.addstr(height - 1, len(statusbarstr), " " * (width - len(statusbarstr) - 1))
+    stdscr.attroff(curses.color_pair(3))
+
+    # Turning on attributes for title
+    stdscr.attron(curses.color_pair(2))
+    stdscr.attron(curses.A_BOLD)
+
+    # Rendering title
+    stdscr.addstr(start_y, start_x_title, title)
+
+    # Turning off attributes for title
+    stdscr.attroff(curses.color_pair(2))
+    stdscr.attroff(curses.A_BOLD)
+
+    # Print rest of text
+    stdscr.addstr(start_y + 1, 0, message)
+    stdscr.addstr(start_y + 5, start_x_keystr, keystr)
+
+    # Refresh the screen
+    stdscr.refresh()
+
+    # Wait for next input
+
+    k = stdscr.getstr()
+
+    return k.decode('utf-8')
+
+
+def show_message(stdscr, msg):
+    # Clear and refresh the screen for a blank canvas
+    stdscr.clear()
+    stdscr.refresh()
+
+    # Start colors in curses
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
+
+    # Initialization
+    stdscr.clear()
+    height, width = stdscr.getmaxyx()
+
+    # Declaration of strings
+    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")[:width - 1]
+    message = msg[:width - 1]
+    statusbarstr = "Modern University |"
+
+    # Centering calculations
+    start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
+    start_y = int((height // 2) - 2)
+
+    # Render status bar
+    stdscr.attron(curses.color_pair(3))
+    stdscr.addstr(height - 1, 0, statusbarstr)
+    stdscr.addstr(height - 1, len(statusbarstr), " " * (width - len(statusbarstr) - 1))
+    stdscr.attroff(curses.color_pair(3))
+
+    # Turning on attributes for title
+    stdscr.attron(curses.color_pair(2))
+    stdscr.attron(curses.A_BOLD)
+
+    # Rendering title
+    stdscr.addstr(start_y, start_x_title, title)
+
+    # Turning off attributes for title
+    stdscr.attroff(curses.color_pair(2))
+    stdscr.attroff(curses.A_BOLD)
+
+    # Print rest of text
+    stdscr.addstr(start_y + 1, 0, message)
+
+    # Refresh the screen
+    stdscr.refresh()
+    sleep(1)
+
+
+def setup(table):
+    while True:
+        k = curses.wrapper(draw_menu, table)
+        print(k)
 
 
 if __name__ == '__main__':
-    setup('salam')
+    table = Texttable().add_rows([
+        ['0', 'test', 'test'],
+        ['1', 'test', 'test'],
+        ['2', 'test', 'test'],
+        ['3', 'test', 'test'],
+        ['4', 'test', 'test'],
+        ['5', 'test', 'test'],
+        ['6', 'test', 'test'],
+        ['7', 'test', 'test'],
+        ['8', 'test', 'test'],
+        ['9', 'test', 'test'],
+    ]).draw()
+    setup(table)

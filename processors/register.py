@@ -1,10 +1,13 @@
+import curses
+
 from models import User
+from render import get_input, show_message
 
 
 def get_data():
-    student_number = input('Enter your student number:\n')
-    password = input('Enter your password:\n')
-    confirm_password = input('Enter your password again:\n')
+    student_number = curses.wrapper(get_input, 'Enter your student number:')
+    password = curses.wrapper(get_input, 'Enter your password:')
+    confirm_password = curses.wrapper(get_input, 'Enter your password again:\n')
     return (student_number, password) if password == confirm_password else (None, None)
 
 
@@ -25,9 +28,9 @@ def setup():
     if student_number:
         if validate(student_number):
             save_data(student_number, password)
-            print('you successfully registered, now wait to accept by an admin!')
+            curses.wrapper(show_message, 'you successfully registered, now wait to accept by an admin!')
         else:
-            print('This student number already exists!')
+            curses.wrapper(show_message, 'This student number already exists!')
 
     else:
-        print('passwords do not match')
+        curses.wrapper(show_message, 'passwords do not match')

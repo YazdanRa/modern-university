@@ -1,7 +1,12 @@
+import curses
+
+from render import get_input, show_message
+
+
 def setup(user):
-    user.first_name = input('Enter your first name: ')
-    user.last_name = input('Enter your last name: ')
-    user.hometown = input('Enter your hometown: ')
-    user.national_id = input('Enter your National ID: ')
+    user.first_name = curses.wrapper(get_input, 'Enter your first name: ')
+    user.last_name = curses.wrapper(get_input, 'Enter your last name: ')
+    user.hometown = curses.wrapper(get_input, 'Enter your hometown: ')
+    user.national_id = curses.wrapper(get_input, 'Enter your National ID: ')
     user.save()
-    print('your information successfully updated!')
+    curses.wrapper(show_message, 'your information successfully updated!')

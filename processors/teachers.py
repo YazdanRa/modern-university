@@ -1,6 +1,9 @@
+import curses
+
 from texttable import Texttable
 
 from models import User
+from render import draw_menu
 
 
 def setup():
@@ -9,4 +12,5 @@ def setup():
     ])
     for teacher in User.select().where(User.is_teacher == True):
         table.add_row([teacher.id, teacher.first_name, teacher.last_name, teacher.student_number])
-    print(table.draw())
+    while curses.wrapper(draw_menu, table.draw()) != ord('b'):
+        pass

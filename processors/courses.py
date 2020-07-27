@@ -1,6 +1,9 @@
+import curses
+
 from texttable import Texttable
 
 from models import Course, User
+from render import draw_menu
 
 
 def get_teacher(course):
@@ -14,4 +17,5 @@ def setup():
     ])
     for course in Course.select():
         table.add_row([course.id, course.title, get_teacher(course), course.is_active])
-    print(table.draw())
+    while curses.wrapper(draw_menu, table.draw()) != ord('b'):
+        pass

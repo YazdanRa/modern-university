@@ -1,9 +1,10 @@
+import curses
+
 from texttable import Texttable
+
+from render import show_message
 
 
 def setup(student):
-    table = Texttable()
-    table.add_row(["ID", "Course"])
-    for course in student.courses:
-        table.add_row([course.id, course.title])
-    print(table.draw())
+    table = Texttable().add_rows([[course.id, course.title] for course in student.courses]).draw()
+    curses.wrapper(show_message, table)
