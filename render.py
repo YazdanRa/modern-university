@@ -80,7 +80,7 @@ def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |
     return k
 
 
-def get_input(stdscr, message='', alter='', status='Enter b to back |'):
+def get_input(stdscr, message, alter='', status='Enter b to back |'):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
     thread.start()
