@@ -3,7 +3,7 @@ import curses
 from texttable import Texttable
 
 from models import Course
-from render import show_message
+from render import show_message, draw_menu
 
 
 def get_student_name(student):
@@ -11,10 +11,14 @@ def get_student_name(student):
 
 
 def setup(teacher):
-    table = Texttable().add_rows([
-        ['ID', 'Student name', 'Student number', 'Course name']
-    ])
-    for course in Course.select().where((Course.is_active == True) & (Course.teacher == teacher)):
+    courses = Course.select().where((Course.is_active == True) & (Course.teacher == teacher))
+    if not len(courses):
+        curses.wrapper(show_message, 'list is empty!')
+        return
+    t = [['ID', 'Student name', 'Student number', 'Course name'], ]
+    for course in courses:
         for student in course.students:
-            table.add_row([student.id, get_student_name(student), student.student_number, course.title])
-    curses.wrapper(show_message, table.draw())
+            t.append([student.id, get_student_name(student), student.student_number, course.title])
+    table = Texttable().add_rows(t).draw()
+    while curses.wrapper(draw_menu, table) != ord('b'):
+        pass
