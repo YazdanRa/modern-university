@@ -1,8 +1,11 @@
+import curses
+
 from texttable import Texttable
 
 from models import Course, Mark
 from processors.my_results import result_mark
 from processors.my_students import get_student_name
+from render import show_message, get_input
 
 
 def get_mark_id(course, student):
@@ -13,27 +16,29 @@ def get_mark_id(course, student):
 def get_mark(id):
     mark = Mark.get(id=id)
     try:
-        score = int(input('Enter the mark you wanna record for this student: '))
+        score = curses.wrapper(get_input, 'Enter the mark you wanna record for this student: ')
+        score = int(score)
     except ValueError:
-        print('You should enter a number!')
+        curses.wrapper(show_message, 'You should enter a number!')
         return False
     if 0 <= score <= 20:
         mark.mark = score
         mark.save()
-        print('Your mark successfully recorded!')
+        curses.wrapper(show_message, 'Your mark successfully recorded!')
         return True
     else:
-        print('You should enter a valid number between 0 and 20')
+        curses.wrapper(show_message, 'You should enter a valid number between 0 and 20')
         return False
 
 
 def setup(teacher, check=False):
-    table = Texttable().add_rows([
-        ['ID', 'Student name', 'Student number', 'Course title', 'Mark']
-    ])
-    for course in Course.select().where((Course.is_active == True) & (Course.teacher == teacher)):
+    courses = Course.select().where((Course.is_active == True) & (Course.teacher == teacher))
+    if not len(courses):
+        curses.wrapper(show_message, 'list is empty!')
+    t = [['ID', 'Student name', 'Student number', 'Course title', 'Mark'], ]
+    for course in courses:
         for student in course.students:
-            table.add_row([
+            t.append([
                 get_mark_id(course, student),
                 get_student_name(student),
                 student.student_number,
@@ -41,22 +46,23 @@ def setup(teacher, check=False):
                 result_mark(course, student)
             ])
             check = True
+
+    table = Texttable().add_rows(t).draw()
     if check:
-        print(table.draw())
-        id = input("""
-        Enter the ID of the item you want to record that number, although even if you want to change that.
-        Enter 0 to cancel the process and back to the menu
-        """)
-        try:
-            id = int(id)
-            if id == 0:
-                print('The process has been canceled!')
-                return True
-            while not get_mark(id):
-                pass
-        except:
-            print('You should enter a valid number!')
-            return False
+        table += '\n\nEnter the ID of the item you want to record that number, although even if you want to change that.'
+        alter = ''
+        status = 'Enter 0 to cancel the process and back to the menu'
+        while True:
+            id = curses.wrapper(get_input, table, alter, status)
+            try:
+                id = int(id)
+                if id == 0:
+                    curses.wrapper(show_message, 'The process has been canceled!')
+                    return True
+                while not get_mark(id):
+                    pass
+            except:
+                alter = 'You should enter a valid number!'
     else:
-        print('You don\'t have any student!')
+        curses.wrapper(show_message, 'You don\'t have any student!')
         return True
