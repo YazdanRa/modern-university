@@ -1,11 +1,23 @@
 import curses
+from threading import Thread
 from time import sleep
 
 from persiantools.jdatetime import JalaliDateTime
 from texttable import Texttable
 
 
+def refresh(args):
+    while True:
+        args.refresh()
+        sleep(60)
+
+
 def draw_menu(stdscr, table, msg='----', alter='', status=''):
+    # start thread
+    thread = Thread(target=refresh, args=stdscr)
+    thread.start()
+    thread.join()
+
     # Clear and refresh the screen for a blank canvas
     stdscr.clear()
     stdscr.refresh()
@@ -56,9 +68,9 @@ def draw_menu(stdscr, table, msg='----', alter='', status=''):
 
     # Print rest of text
     try:
-        stdscr.addstr(int(start_y/2) + 1, 0, table)
-        stdscr.addstr(int(start_y/2) + 1, (width // 2) - 2, message)
-        stdscr.addstr(int(start_y/2) + 2, start_x_keystr, Alter)
+        stdscr.addstr(int(start_y / 2) + 1, 0, table)
+        stdscr.addstr(int(start_y / 2) + 1, (width // 2) - 2, message)
+        stdscr.addstr(int(start_y / 2) + 2, start_x_keystr, Alter)
     except curses.error:
         pass
 
@@ -70,8 +82,12 @@ def draw_menu(stdscr, table, msg='----', alter='', status=''):
     return k
 
 
-
 def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
+    # start thread
+    thread = Thread(target=refresh, args=stdscr)
+    thread.start()
+    thread.join()
+
     # Clear and refresh the screen for a blank canvas
     stdscr.clear()
     stdscr.refresh()
@@ -139,6 +155,11 @@ def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
 
 
 def show_message(stdscr, msg):
+    # start thread
+    thread = Thread(target=refresh, args=stdscr)
+    thread.start()
+    thread.join()
+
     # Clear and refresh the screen for a blank canvas
     stdscr.clear()
     stdscr.refresh()
@@ -180,7 +201,6 @@ def show_message(stdscr, msg):
         stdscr.addstr(start_y, start_x_title, title)
     except curses.error:
         pass
-
 
     # Turning off attributes for title
     stdscr.attroff(curses.color_pair(2))
