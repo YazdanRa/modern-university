@@ -46,7 +46,7 @@ def set_role(user):
 def setup():
     users = User.select().where(User.is_active == False)
     table = Texttable()
-    table.add_row(['ID', 'Student Number'])
+    table.add_rows([['ID', 'Student Number']])
     table.add_rows([[user.id, user.student_number] for user in users])
     message = 'Now send the ID of target you want to active it!'
     status = 'send 0 to cancel the process and back to menu'
