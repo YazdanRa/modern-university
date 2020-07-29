@@ -12,7 +12,7 @@ def refresh(args):
         sleep(60)
 
 
-def draw_menu(stdscr, table, msg='----', alter='', status=''):
+def draw_menu(stdscr, table, msg='----', alter='', status='Enter b to back |'):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
     thread.start()
