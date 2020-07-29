@@ -3,7 +3,7 @@ import curses
 from texttable import Texttable
 
 from models import Course, User
-from render import draw_menu, show_message
+from render import show_message, get_input
 
 
 def get_teacher_name(course):
@@ -18,10 +18,9 @@ def setup():
     for course in Course.select().where(Course.is_active == False):
         table.add_row([course.id, course.title,  get_teacher_name(course)])
     message = 'Enter the id of the course you want to active!'
-    alter = ''
     status = 'Enter 0 to Cancel the process and back to the menu'
     try:
-        id = curses.wrapper(draw_menu, table.draw(), message, alter, status)
+        id = curses.wrapper(get_input, table.draw(), message, status)
         id = int(id)
         if id == 0:
             curses.wrapper(show_message, 'The process has been canceled!')
