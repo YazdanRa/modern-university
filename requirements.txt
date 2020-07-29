@@ -2,3 +2,4 @@ peewee==3.13.3
 persiantools==1.4.1
 python-dotenv==0.14.0
 texttable==1.6.2
+windows-curses==2.1.0
