@@ -3,7 +3,7 @@ import curses
 from texttable import Texttable
 
 from models import User
-from render import draw_menu, show_message
+from render import draw_menu, show_message, get_input
 
 
 def set_role(user):
@@ -46,14 +46,12 @@ def set_role(user):
 def setup():
     users = User.select().where(User.is_active == False)
     table = Texttable()
-    table.add_rows([[user.id, user.student_number] for user in users])
     table.add_row(['ID', 'Student Number'])
+    table.add_rows([[user.id, user.student_number] for user in users])
     message = 'Now send the ID of target you want to active it!'
-    alter = ''
     status = 'send 0 to cancel the process and back to menu'
-
     try:
-        id = curses.wrapper(draw_menu, table.draw(), message, alter, status)
+        id = curses.wrapper(get_input, table.draw(), message, status)
         id = int(id)
         if id == 0:
             curses.wrapper(show_message, 'The process has been canceled!')
