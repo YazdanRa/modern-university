@@ -18,6 +18,7 @@ def setup(student):
         """.format(teacher.first_name, teacher.last_name, course.title)
         try:
             rate = curses.wrapper(get_input, msg)
+            rate = int(rate)
             if 1 <= rate <= 5:
                 course.rate = (course.rate + rate)/2
                 course.save()
