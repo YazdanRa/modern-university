@@ -3,7 +3,7 @@ import curses
 from texttable import Texttable
 
 from models import Mark, Course
-from render import draw_menu
+from render import draw_menu, show_message
 
 
 def get_course_name(course):
@@ -17,12 +17,13 @@ def result_mark(course, student):
 
 
 def setup(student):
+    if not len(student.courses):
+        curses.wrapper(show_message, 'List is empty!')
+        return
     table = Texttable().add_rows([
         ['Course title', 'Your mark']
     ])
     for course in student.courses:
         table.add_row([course.title, result_mark(course, student)])
-    while True:
-        k = curses.wrapper(draw_menu, table.draw())
-        if k == ord('b'):
-            break
+    while curses.wrapper(draw_menu, table.draw()) != ord('b'):
+        pass

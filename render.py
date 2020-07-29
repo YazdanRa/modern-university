@@ -12,7 +12,7 @@ def refresh(args):
         sleep(60)
 
 
-def draw_menu(stdscr, table, msg='----', alter='', status='Enter b to back |'):
+def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |'):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
     thread.start()
@@ -33,14 +33,12 @@ def draw_menu(stdscr, table, msg='----', alter='', status='Enter b to back |'):
     height, width = stdscr.getmaxyx()
 
     # Declaration of strings
-    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")[:width - 1]
-    Alter = alter[:width - 1]
-    message = msg[:width - 1]
+    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")
     statusbarstr = "Modern University | {}".format(status)
 
     # Centering calculations
     start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
-    start_x_keystr = int((width // 2) - (len(Alter) // 2) - len(Alter) % 2)
+    start_x_keystr = int((width // 2) - (len(alter) // 2) - len(alter) % 2)
     start_y = int((height // 2) - 2)
 
     # Render status bar
@@ -70,7 +68,7 @@ def draw_menu(stdscr, table, msg='----', alter='', status='Enter b to back |'):
     try:
         stdscr.addstr(int(start_y / 2) + 1, 0, table)
         stdscr.addstr(int(start_y / 2) + 1, (width // 2) - 2, message)
-        stdscr.addstr(int(start_y / 2) + 2, start_x_keystr, Alter)
+        stdscr.addstr(int(start_y / 2) + 2, start_x_keystr, alter)
     except curses.error:
         pass
 
@@ -82,7 +80,7 @@ def draw_menu(stdscr, table, msg='----', alter='', status='Enter b to back |'):
     return k
 
 
-def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
+def get_input(stdscr, message='', alter='', status='Enter b to back |'):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
     thread.start()
@@ -104,14 +102,12 @@ def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
     height, width = stdscr.getmaxyx()
 
     # Declaration of strings
-    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")[:width - 1]
-    message = msg[:width - 1]
-    keystr = alter[:width - 1]
+    title = JalaliDateTime.now().strftime("%A %d %B %Y %H:%M")
     statusbarstr = "Modern University | {}".format(status)
 
     # Centering calculations
     start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
-    start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
+    start_x_keystr = int((width // 2) - (len(alter) // 2) - len(alter) % 2)
     start_y = int((height // 2) - 2)
 
     # Render status bar
@@ -140,7 +136,7 @@ def get_input(stdscr, msg='', alter='', status='Enter b to back |'):
     # Print rest of text
     try:
         stdscr.addstr(start_y + 1, 0, message)
-        stdscr.addstr(start_y + 5, start_x_keystr, keystr)
+        stdscr.addstr(start_y + 5, start_x_keystr, alter)
     except curses.error:
         pass
 
