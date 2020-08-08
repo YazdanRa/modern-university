@@ -14,7 +14,7 @@ def setup(teacher):
         ['D', 'Record Marks'],
     ]).draw()
     message, alter = 'Enter the letter of your target', ''
-    status = 'Press E to EDIT INFO | Press F to CHANGE PASSWORD | Press G to LOG OUT |'
+    status = 'Press E to EDIT INFO | Press F to CHANGE PASSWORD | Press G to LOG OUT | Press Q to Quit |'
     while True:
         choice = curses.wrapper(draw_menu, table, message, alter, status)
         if choice == ord('a'):
@@ -36,6 +36,8 @@ def setup(teacher):
         elif choice == ord('f'):
             from processors import change_pass
             change_pass.setup(teacher)
+        elif choice == ord('q'):
+            exit(print("bye"))
         elif choice == ord('g'):
             break
         else:

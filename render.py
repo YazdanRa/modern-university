@@ -12,6 +12,32 @@ def refresh(args):
         sleep(60)
 
 
+def select_menu(stdscr, table, message='----', alter='', status='Enter Q to Quit |'):
+    key = ""
+    row = 0
+    while True:
+        table_list = table.split("\n")
+
+        table_list[(row * 2 + 1) % 4] += " <- "
+        table1 = "\n".join(table_list)
+
+        key = draw_menu(stdscr, table1, message, alter, status)
+        if key == 259:  # up
+            row -= 1
+        elif key == 258:  # down
+            row += 1
+        elif key == 10:
+            if row & 1:
+                return "r"
+            else:
+                return "l"
+
+        elif key == ord('q'):
+            exit(print('Good Bye :)'))
+        else:
+            alter = 'Enter a valid letter!'
+
+
 def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |'):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
@@ -65,6 +91,7 @@ def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |
     stdscr.attroff(curses.A_BOLD)
 
     # Print rest of text
+
     try:
         stdscr.addstr(int(start_y / 2) + 1, 0, table)
         stdscr.addstr(int(start_y / 2) + 1, (width // 2) - 2, message)
@@ -80,7 +107,7 @@ def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |
     return k
 
 
-def get_input(stdscr, message, alter='', status='Enter b to back |'):
+def get_input(stdscr, message, alter='', status=''):
     # start thread
     thread = Thread(target=refresh, args=stdscr)
     thread.start()
@@ -207,13 +234,14 @@ def show_message(stdscr, msg):
 
     # Refresh the screen
     stdscr.refresh()
-    sleep(1)
+    sleep(2)
 
 
 def setup(table):
     while True:
         k = curses.wrapper(draw_menu, table)
         print(k)
+        exit(0)
 
 
 if __name__ == '__main__':

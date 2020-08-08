@@ -2,26 +2,21 @@ import curses
 
 from texttable import Texttable
 
-from render import draw_menu
+from render import select_menu
 
 
 def setup():
     table = Texttable()
     table.add_rows([
-        ["#", "Item"],
-        ['L', 'Login'],
-        ['R', 'Register'],
+        ['Login'],
+        ['Register'],
     ])
-    message, alter, status = '', '', 'Press E to EXIT | '
     while True:
-        choice = curses.wrapper(draw_menu, table.draw(), message, alter, status)
-        if choice == ord('l'):
+        choice = curses.wrapper(select_menu, table.draw())
+        if choice == 'l':
             from processors import login
             login.setup()
-        elif choice == ord('r'):
+        elif choice == 'r':
             from processors import register
             register.setup()
-        elif choice == ord('e'):
-            exit(print('Good Bye :)'))
-        else:
-            alter = 'Enter a valid letter!'
+

@@ -1,7 +1,10 @@
+import curses
+
 from texttable import Texttable
 
 from models import User, Mark
 from processors.my_students import get_student_name
+from render import draw_menu, show_message
 
 
 def setup(is_empty=True):
@@ -21,7 +24,7 @@ def setup(is_empty=True):
             table.add_row([get_student_name(student), student.student_number, student.grade])
             is_empty = False
     if is_empty:
-        print('Nothing to show! :):')
+        curses.wrapper(show_message,'Nothing to show! :)')
     else:
         # TODO: sort the table before draw that!
-        print(table.draw())
+        curses.wrapper(draw_menu, table.draw())
