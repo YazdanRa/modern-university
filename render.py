@@ -53,6 +53,7 @@ def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
 
     # Initialization
     stdscr.clear()
@@ -91,13 +92,16 @@ def draw_menu(stdscr, table, message='----', alter='', status='Enter b to back |
     stdscr.attroff(curses.A_BOLD)
 
     # Print rest of text
+    stdscr.attron(curses.color_pair(4))
 
     try:
         stdscr.addstr(int(start_y / 2) + 1, 0, table)
+        stdscr.attroff(curses.color_pair(4))
         stdscr.addstr(int(start_y / 2) + 1, (width // 2) - 2, message)
         stdscr.addstr(int(start_y / 2) + 2, start_x_keystr, alter)
     except curses.error:
         pass
+    stdscr.attroff(curses.color_pair(4))
 
     # Refresh the screen
     stdscr.refresh()
@@ -159,7 +163,6 @@ def get_input(stdscr, message, alter='', status=''):
     # Turning off attributes for title
     stdscr.attroff(curses.color_pair(2))
     stdscr.attroff(curses.A_BOLD)
-
     # Print rest of text
     try:
         stdscr.addstr(start_y + 1, 0, message)
@@ -229,8 +232,11 @@ def show_message(stdscr, msg):
     stdscr.attroff(curses.color_pair(2))
     stdscr.attroff(curses.A_BOLD)
 
+    stdscr.attron(curses.color_pair(2))
+
     # Print rest of text
     stdscr.addstr(start_y + 1, 0, message)
+    stdscr.attroff(curses.color_pair(2))
 
     # Refresh the screen
     stdscr.refresh()
